@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List</title>
+<style>
+/* Background for the entire webpage */
+body {
+    font-family: "Edwardian Script ITC", sans-serif; /* Change font to Edwardian Script ITC */
+    background-image: url('webpage_background.png'); /* Replace 'webpage_background.png' with the URL of your PNG image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* White container background */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    width: calc(100% - 38px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: maroon; /* Change button background color to maroon */
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc; /* Add border bottom to separate list items */
+    transition: background-color 0.3s ease; /* Add transition effect */
+    font-size: 18px; /* Increase the font size of task text */
+}
+
+li:hover {
+    background-color: #f9f9f9; /* Change background color on hover */
+}
+
+label {
+    margin-right: 10px;
+}
+
+.checkbox {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #eee; /* Light gray checkbox background */
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.checkbox.checked {
+    background-color:#800000; /* Green checkbox background when checked */
+    border-color: #800000;
+}
+
+.checkbox.checked::after {
+    content: '\2713';
+    font-size: 16px;
+    color: #fff;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: #ccc;
+}
+
+h2 {
+    text-align: center; /* Center align the header */
+    font-size: 28px; /* Increase the font size */
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter a new task...">
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList">
+    </ul>
+</div>
+
+<script>
+function addTask() {
+    var taskInput = document.getElementById("taskInput");
+    var taskList = document.getElementById("taskList");
+    
+    if (taskInput.value.trim() !== "") {
+        var li = document.createElement("li");
+        var checkbox = document.createElement("span");
+        checkbox.className = "checkbox";
+        checkbox.setAttribute("onclick", "toggleCheckbox(this)");
+        li.appendChild(checkbox);
+        li.appendChild(document.createTextNode(taskInput.value));
+        taskList.appendChild(li);
+        taskInput.value = "";
+    } else {
+        alert("Please enter a task.");
+    }
+}
+
+function toggleCheckbox(checkbox) {
+    checkbox.classList.toggle("checked");
+    var taskText = checkbox.nextSibling;
+    taskText.classList.toggle("strikethrough");
+    if (checkbox.classList.contains("checked")) {
+        checkbox.parentNode.style.order = "1";
+    } else {
+        checkbox.parentNode.style.order = "-1";
+    }
+}
+</script>
+
+</body>
+</html>
