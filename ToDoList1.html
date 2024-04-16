@@ -7,7 +7,7 @@
 <style>
 /* Background for the entire webpage */
 body {
-    font-family: "Edwardian Script ITC", sans-serif; /* Change font to Edwardian Script ITC */
+    font-family: Calibri, sans-serif; /* Change font to Calibri */
     background-image: url('webpage_background.png'); /* Replace 'webpage_background.png' with the URL of your PNG image */
     background-size: cover;
     background-repeat: no-repeat;
@@ -21,14 +21,29 @@ body {
     background-color: #fff; /* White container background */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease; /* Fade in effect */
 }
 
-input[type="text"] {
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+input[type="text"], select {
     width: calc(100% - 38px);
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    transition: border-color 0.3s ease; /* Smooth border color transition */
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: maroon; /* Change border color on focus */
 }
 
 button {
@@ -38,6 +53,11 @@ button {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+button:hover {
+    background-color: #800000; /* Darken button background color on hover */
 }
 
 ul {
@@ -50,12 +70,12 @@ li {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ccc; /* Add border bottom to separate list items */
-    transition: background-color 0.3s ease; /* Add transition effect */
     font-size: 18px; /* Increase the font size of task text */
+    transition: transform 0.3s ease; /* Smooth transform transition */
 }
 
 li:hover {
-    background-color: #f9f9f9; /* Change background color on hover */
+    transform: scale(1.02); /* Scale up on hover */
 }
 
 label {
@@ -103,6 +123,13 @@ h2 {
 <div class="container">
     <h2>To-Do List</h2>
     <input type="text" id="taskInput" placeholder="Enter a new task...">
+    <select id="prioritySelect"> <!-- Priority dropdown -->
+        <option value="1">Important but not urgent</option>
+        <option value="2">Important and urgent</option>
+        <option value="3">Not important but urgent</option>
+        <option value="4">Not important nor urgent</option>
+    </select>
+    <input type="date" id="deadlineInput" placeholder="Select deadline..."> <!-- Deadline date input -->
     <button onclick="addTask()">Add</button>
     <ul id="taskList">
     </ul>
@@ -112,16 +139,21 @@ h2 {
 function addTask() {
     var taskInput = document.getElementById("taskInput");
     var taskList = document.getElementById("taskList");
-    
+    var prioritySelect = document.getElementById("prioritySelect");
+    var deadlineInput = document.getElementById("deadlineInput");
+
+    var deadline = deadlineInput.value;
+
     if (taskInput.value.trim() !== "") {
         var li = document.createElement("li");
         var checkbox = document.createElement("span");
         checkbox.className = "checkbox";
         checkbox.setAttribute("onclick", "toggleCheckbox(this)");
         li.appendChild(checkbox);
-        li.appendChild(document.createTextNode(taskInput.value));
+        li.appendChild(document.createTextNode(taskInput.value + " (Priority: " + prioritySelect.options[prioritySelect.selectedIndex].text + ", Deadline: " + deadline + ")"));
         taskList.appendChild(li);
         taskInput.value = "";
+        li.style.animation = "fadeIn 0.5s ease"; /* Fade in effect for newly added task */
     } else {
         alert("Please enter a task.");
     }
@@ -131,11 +163,13 @@ function toggleCheckbox(checkbox) {
     checkbox.classList.toggle("checked");
     var taskText = checkbox.nextSibling;
     taskText.classList.toggle("strikethrough");
+    var task = checkbox.parentNode;
     if (checkbox.classList.contains("checked")) {
-        checkbox.parentNode.style.order = "1";
+        task.style.order = "1";
     } else {
-        checkbox.parentNode.style.order = "-1";
+        task.style.order = "-1";
     }
+    task.parentNode.appendChild(task);
 }
 </script>
 
